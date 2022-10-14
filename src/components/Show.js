@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { reset } from '../store/modules/mbti';
@@ -7,6 +8,17 @@ export default function Show() {
   const result = useSelector((state) => state.mbti.mbtiResult);
   const explanation = useSelector((state) => state.mbti.explanation[result]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function sendData() {
+      const resInc = await fetch('http://localhost:4000/data/inccount', {
+        method: 'POST',
+      });
+      if (resInc.status === 200) console.log(await resInc.json());
+      else throw new Error('통신 이상');
+    }
+    sendData();
+  }, []);
 
   return (
     <>
