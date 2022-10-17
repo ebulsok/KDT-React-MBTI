@@ -9,15 +9,25 @@ export default function Show() {
   const explanation = useSelector((state) => state.mbti.explanation[result]);
   const dispatch = useDispatch();
 
+  async function sqlSendData() {
+    const resInc = await fetch('http://localhost:4000/data/inccount', {
+      method: 'POST',
+    });
+    if (resInc.status === 200) console.log(await resInc.json());
+    else throw new Error('통신 이상');
+  }
+
+  async function mongoSendData() {
+    const resInc = await fetch('http://localhost:4000/mongo/inccount', {
+      method: 'POST',
+    });
+    if (resInc.status === 200) console.log(await resInc.json());
+    else throw new Error('통신 이상');
+  }
+
   useEffect(() => {
-    async function sendData() {
-      const resInc = await fetch('http://localhost:4000/data/inccount', {
-        method: 'POST',
-      });
-      if (resInc.status === 200) console.log(await resInc.json());
-      else throw new Error('통신 이상');
-    }
-    sendData();
+    // sqlSendData();
+    mongoSendData();
   }, []);
 
   return (
